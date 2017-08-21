@@ -53,7 +53,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
 	:param num_classes: Number of classes to classify
 	:return: The Tensor for the last layer of output
 	"""
-	# TODO: Implement function
+	# TODO: Implement function 
 	return None
 tests.test_layers(layers)
 
