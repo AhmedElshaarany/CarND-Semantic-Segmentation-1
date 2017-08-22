@@ -5,6 +5,9 @@ import warnings
 from distutils.version import LooseVersion
 import project_tests as tests
 
+BATCH_SIZE = 256
+EPOCHS = 30
+
 
 # Check TensorFlow Version
 assert LooseVersion(tf.__version__) >= LooseVersion('1.0'), 'Please use TensorFlow version 1.0 or newer.  You are using {}'.format(tf.__version__)
@@ -88,6 +91,13 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 	:param learning_rate: TF Placeholder for learning rate
 	"""
 	# TODO: Implement function
+	sess.run(tf.initialize_all_variables())
+
+	steps_per_epoch = len(X_train) // BATCH_SIZE
+	num_examples = steps_per_epoch * BATCH_SIZE
+
+
+
 	pass
 tests.test_train_nn(train_nn)
 
