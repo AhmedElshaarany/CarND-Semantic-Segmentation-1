@@ -5,7 +5,6 @@ import warnings
 from distutils.version import LooseVersion
 import project_tests as tests
 
-BATCH_SIZE = 256
 EPOCHS = 30
 
 
@@ -93,9 +92,17 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 	# TODO: Implement function
 	sess.run(tf.initialize_all_variables())
 
-	steps_per_epoch = len(X_train) // BATCH_SIZE
-	num_examples = steps_per_epoch * BATCH_SIZE
+	steps_per_epoch = len(X_train) // batch_size
+	num_examples = steps_per_epoch * batch_size
 
+	# Usefull, still do not know how
+	logits = tf.reshape(input, (-1, num_classes))
+	cross_entropy_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits, labels))
+
+
+	# Train the model
+	for i in range(EPOCHS): 
+		for steps in range(steps_per_epoch):
 
 
 	pass
