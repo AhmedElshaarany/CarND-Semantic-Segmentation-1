@@ -104,7 +104,6 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 	# Define optimizer
 	optimizer = tf.train.AdamOptimizer(learning_rate=LEARNING_RATE).minimize(cost)
 	
-
 	# Train the model
 	with sess.as_default():
 		sess.run(tf.initialize_all_variables())
@@ -117,7 +116,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 					learning_rate: LEARNING_RATE
 				})
 			print("Epoch:", '%04d | ' % (i+1), "cost =", "{:.9f}".format(cost_per_epoch))
-			
+
 tests.test_train_nn(train_nn)
 
 
