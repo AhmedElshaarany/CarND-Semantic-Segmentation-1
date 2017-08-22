@@ -5,7 +5,10 @@ import warnings
 from distutils.version import LooseVersion
 import project_tests as tests
 
-EPOCHS = 30
+# Parameters used while training the NN
+EPOCHS = 10
+KEEP_PROB = 0.5
+LEARNING_RATE = 0.0001
 
 
 # Check TensorFlow Version
@@ -89,23 +92,32 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 	:param keep_prob: TF Placeholder for dropout keep probability
 	:param learning_rate: TF Placeholder for learning rate
 	"""
-	# TODO: Implement function
-	sess.run(tf.initialize_all_variables())
-
 	steps_per_epoch = len(X_train) // batch_size
 	num_examples = steps_per_epoch * batch_size
 
-	# Usefull, still do not know how
+	# Get logits 
 	logits = tf.reshape(input, (-1, num_classes))
-	cross_entropy_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits, labels))
 
+	# Define cost function
+	cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits, correct_labels))
+
+	# Define optimizer
+	optimizer = tf.train.AdamOptimizer(learning_rate=LEARNING_RATE).minimize(cost)
+	
 
 	# Train the model
-	for i in range(EPOCHS): 
-		for steps in range(steps_per_epoch):
-
-
-	pass
+	with sess.as_default():
+		sess.run(tf.initialize_all_variables())
+		for i in range(EPOCHS): 
+			for steps in range(steps_per_epoch):
+				sess.run(optimizer, feed_dict={
+					input_image: correct_label, # should be actual images, 
+					correct_label: correct_label, 
+					keep_prob: KEEP_PROB, 
+					learning_rate: LEARNING_RATE
+				})
+			print("Epoch:", '%04d | ' % (i+1), "cost =", "{:.9f}".format(cost_per_epoch))
+			
 tests.test_train_nn(train_nn)
 
 
