@@ -108,10 +108,10 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 	with sess.as_default():
 		sess.run(tf.initialize_all_variables())
 		for i in range(EPOCHS): 
-			for steps in range(steps_per_epoch):
+			for batch_x, batch_y in get_batches_fn(batch_size):
 				sess.run(optimizer, feed_dict={
-					input_image: correct_label, # should be actual images, 
-					correct_label: correct_label, 
+					input_image: batch_x, 
+					correct_label: batch_y, 
 					keep_prob: KEEP_PROB, 
 					learning_rate: LEARNING_RATE
 				})
