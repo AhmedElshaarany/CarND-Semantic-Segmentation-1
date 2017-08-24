@@ -58,7 +58,15 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
 	:param num_classes: Number of classes to classify
 	:return: The Tensor for the last layer of output
 	"""
-	# TODO: Implement function 
+	
+	# 1st part - Encoder (downsampling)
+	# Transform the Fully Connected Layer output of layer 7, 4 and 3 to a 1*1 Convolution layer
+	# l1_* is misleading as it is the transformed 7th layer from VGG16, did not find good naming convention
+	l1_conv_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, kernel_size=1, strides=(1,1))
+	l2_conv_1x1 = tf.layers.conv2d(vgg_layer4_out, num_classes, kernel_size=1, strides=(1,1))
+	l3_conv_1x1 = tf.layers.conv2d(vgg_layer3_out, num_classes, kernel_size=1, strides=(1,1))
+	
+
 	return None
 tests.test_layers(layers)
 
