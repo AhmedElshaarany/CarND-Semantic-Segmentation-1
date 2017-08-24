@@ -7,6 +7,7 @@ import project_tests as tests
 
 # Parameters used while training the NN
 EPOCHS = 10
+BATCH_SIZE = 256
 KEEP_PROB = 0.5
 LEARNING_RATE = 0.0001
 
@@ -110,8 +111,8 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 				_, loss = sess.run([train_op, cross_entropy_loss], feed_dict={
 					input_image: batch_x, 
 					correct_label: batch_y, 
-					keep_prob: KEEP_PROB, 
-					learning_rate: LEARNING_RATE
+					keep_prob: keep_prob, 
+					learning_rate: learning_rate
 				})
 			index += 1
 			print("Epoch:", '%04d | ' % (i+1), "cost =", "{:.9f}".format(cost_per_epoch))
@@ -143,11 +144,14 @@ def run():
 		#  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
 
 		# TODO: Build NN using load_vgg, layers, and optimize function
+		image_input, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
 
 		# TODO: Train NN using the train_nn function
+		logits, optimizer, cost = optimize(nn_last_layer, correct_label, LEARNING_RATE, num_classes)
+		train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, optimizer, cost, image_input, correct_label, KEEP_PROB, LEARNING_RATE)
 
-		# TODO: Save inference data using helper.save_inference_samples
-		#  helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
+		# Save inference data using helper.save_inference_samples
+		helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
 
 		# OPTIONAL: Apply the trained model to a video
 
