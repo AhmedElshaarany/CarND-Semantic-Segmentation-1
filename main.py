@@ -72,8 +72,16 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
 	:param num_classes: Number of classes to classify
 	:return: Tuple of (logits, train_op, cross_entropy_loss)
 	"""
-	# TODO: Implement function
-	return None, None, None
+	# Get logits 
+	logits = tf.reshape(nn_last_layer, (-1, num_classes))
+
+	# Define cost function (cross_entropy_loss)
+	cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits, correct_labels)) 
+
+	# Define optimizer
+	optimizer = tf.train.AdamOptimizer(learning_rate=LEARNING_RATE).minimize(cost)
+
+	return logits, optimizer, cost
 tests.test_optimize(optimize)
 
 
@@ -92,14 +100,6 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 	:param keep_prob: TF Placeholder for dropout keep probability
 	:param learning_rate: TF Placeholder for learning rate
 	"""
-	# Get logits 
-	#logits = tf.reshape(input, (-1, num_classes))
-
-	# Define cost function
-	#cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits, correct_labels))
-
-	# Define optimizer
-	#optimizer = tf.train.AdamOptimizer(learning_rate=LEARNING_RATE).minimize(cost)
 	
 	# Train the model
 	with sess.as_default():
