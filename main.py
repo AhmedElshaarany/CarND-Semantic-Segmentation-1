@@ -52,6 +52,9 @@ tests.test_load_vgg(load_vgg, tf)
 def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
 	"""
 	Create the layers for a fully convolutional network.  Build skip-layers using the vgg layers.
+	The role of the Encoder is done by the pre-trained VGG16 model. 
+	The role of the decoder is done by the following model, as well as the transformation to a fully connected layer 
+	(output of VGG16) to a convolutional layer
 	:param vgg_layer7_out: TF Tensor for VGG Layer 3 output
 	:param vgg_layer4_out: TF Tensor for VGG Layer 4 output
 	:param vgg_layer3_out: TF Tensor for VGG Layer 7 output
@@ -59,13 +62,16 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
 	:return: The Tensor for the last layer of output
 	"""
 	
-	# 1st part - Encoder (downsampling)
 	# Transform the Fully Connected Layer output of layer 7, 4 and 3 to a 1*1 Convolution layer
 	# l1_* is misleading as it is the transformed 7th layer from VGG16, did not find good naming convention
-	l1_conv_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, kernel_size=1, strides=(1,1))
-	l2_conv_1x1 = tf.layers.conv2d(vgg_layer4_out, num_classes, kernel_size=1, strides=(1,1))
-	l3_conv_1x1 = tf.layers.conv2d(vgg_layer3_out, num_classes, kernel_size=1, strides=(1,1))
-	
+	l1_conv_1x1 = tf.layers.conv2d(input=vgg_layer3_out, num_classes, kernel_size=1, strides=(1,1))
+	l2_conv_1x1 = tf.layers.conv2d(input=vgg_layer4_out, num_classes, kernel_size=1, strides=(1,1))
+	l3_conv_1x1 = tf.layers.conv2d(input=vgg_layer7_out, num_classes, kernel_size=1, strides=(1,1))
+
+	# Decoder Layer with upsampling and skipped connections
+	l4_decoder = tf.layers.conv2d_transpose(input=l1_conv_1x1, num_classes, kernel_size=(4,4), strides=(2,2))
+	l5_decoder = tf.layers.conv2d_transpose(input=l2_conv_1x1, num_classes, kernel_size=(4,4), strides=(2,2))
+	l5_decoder = tf.layers.conv2d_transpose(input=l3_conv_1x1, num_classes, kernel_size=(16,16), strides=(8,8))
 
 	return None
 tests.test_layers(layers)
