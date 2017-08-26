@@ -167,6 +167,9 @@ def run():
 		# Build NN using load_vgg, layers, and optimize function
 		image_input, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
 
+		# Get the output of the model
+		nn_last_layer = layers(layer3_out, layer4_out, layer7_out, num_classes)
+
 		# Train NN using the train_nn function
 		logits, optimizer, cost = optimize(nn_last_layer, correct_label, LEARNING_RATE, num_classes)
 		train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, optimizer, cost, image_input, correct_label, KEEP_PROB, LEARNING_RATE)
