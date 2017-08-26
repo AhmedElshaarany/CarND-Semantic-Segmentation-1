@@ -11,6 +11,10 @@ BATCH_SIZE = 256
 KEEP_PROB = 0.5
 LEARNING_RATE = 0.0001
 
+# Tensorflow Placeholders
+correct_label = tf.placeholder(tf.float32)
+learning_rate = tf.placeholder(tf.float32)
+
 # Check TensorFlow Version
 assert LooseVersion(tf.__version__) >= LooseVersion('1.0'), 'Please use TensorFlow version 1.0 or newer.  You are using {}'.format(tf.__version__)
 print('TensorFlow Version: {}'.format(tf.__version__))
