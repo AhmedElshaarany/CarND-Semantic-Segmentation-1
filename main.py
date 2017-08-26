@@ -64,16 +64,23 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
 	
 	# Transform the Fully Connected Layer output of layer 7, 4 and 3 to a 1*1 Convolution layer
 	# l1_* is misleading as it is the transformed 7th layer from VGG16, did not find good naming convention
-	l1_conv_1x1 = tf.layers.conv2d(input=vgg_layer3_out, num_classes, kernel_size=1, strides=(1,1))
-	l2_conv_1x1 = tf.layers.conv2d(input=vgg_layer4_out, num_classes, kernel_size=1, strides=(1,1))
-	l3_conv_1x1 = tf.layers.conv2d(input=vgg_layer7_out, num_classes, kernel_size=1, strides=(1,1))
+	l1_conv_1x1 = tf.layers.conv2d(input=vgg_layer3_out, num_classes=num_classes, kernel_size=1, strides=(1,1))
+	l2_conv_1x1 = tf.layers.conv2d(input=vgg_layer4_out, num_classes=num_classes, kernel_size=1, strides=(1,1))
+	l3_conv_1x1 = tf.layers.conv2d(input=vgg_layer7_out, num_classes=num_classes, kernel_size=1, strides=(1,1))
 
 	# Decoder Layer with upsampling and skipped connections
-	l4_decoder = tf.layers.conv2d_transpose(input=l1_conv_1x1, num_classes, kernel_size=(4,4), strides=(2,2))
-	l5_decoder = tf.layers.conv2d_transpose(input=l2_conv_1x1, num_classes, kernel_size=(4,4), strides=(2,2))
-	l5_decoder = tf.layers.conv2d_transpose(input=l3_conv_1x1, num_classes, kernel_size=(16,16), strides=(8,8))
+	# Upsampling l1_conv_1x1
+	l4_decoder = tf.layers.conv2d_transpose(input=l1_conv_1x1, num_classes=num_classes, kernel_size=(4,4), strides=(2,2))
+	# Skip connections from VGG16 layer 4
+	l5_decoder = tf.add(l4_decoder, l2_conv_1x1)
+	# Upsampling l2_conv_1x1
+	l6_decoder = tf.layers.conv2d_transpose(input=l2_conv_1x1, num_classes=num_classes, kernel_size=(4,4), strides=(2,2))
+	# Skip connections from VGG16 layer 3
+	l7_decoder = tf.add(l6_decoder, l1_conv_1x1)
+	# Upsampling l3_conv_1x1
+	output = tf.layers.conv2d_transpose(input=l3_conv_1x1, num_classes=num_classes, kernel_size=(16,16), strides=(8,8))
 
-	return None
+	return output
 tests.test_layers(layers)
 
 
