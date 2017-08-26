@@ -7,8 +7,8 @@ import project_tests as tests
 
 # Parameters used while training the NN
 EPOCHS = 10
-BATCH_SIZE = 256
-KEEP_PROB = 0.5
+BATCH_SIZE = 1
+KEEP_PROBABILITY = 0.5
 LEARNING_RATE = 0.0001
 
 # Tensorflow Placeholders
@@ -131,13 +131,13 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 	with sess.as_default():
 		for epoch in range(EPOCHS):
 			index = 0
-			for images, labels in get_batches_fn(BATCH_SIZE):
+			for images, labels in get_batches_fn(batch_size):
 				index += 1
 				_, loss = sess.run([train_op, cross_entropy_loss], feed_dict = { 
 					input_image: images,
 					correct_label: labels,
-					keep_prob: 0.5,
-					learning_rate: LEARNING_RATE 
+					keep_prob: keep_prob,
+					learning_rate: learning_rate 
 				})
 				print("Epoch:", '%04d | ' % (index+1), "cost =", "{:.9f}".format(loss))
 
@@ -177,10 +177,10 @@ def run():
 
 		# Train NN using the train_nn function
 		logits, optimizer, cost = optimize(nn_last_layer, correct_label, LEARNING_RATE, num_classes)
-		train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, optimizer, cost, image_input, correct_label, KEEP_PROB, LEARNING_RATE)
+		train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, optimizer, cost, image_input, correct_label, KEEP_PROBABILITY, LEARNING_RATE)
 
 		# Save inference data using helper.save_inference_samples
-		helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
+		helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, KEEP_PROBABILITY, input_image)
 
 		# OPTIONAL: Apply the trained model to a video
 
