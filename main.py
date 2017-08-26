@@ -124,18 +124,17 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 	
 	# Train the model
 	with sess.as_default():
-		sess.run(tf.initialize_all_variables())
-		for i in range(EPOCHS):
+		for epoch in range(EPOCHS):
 			index = 0
-			for batch_x, batch_y in get_batches_fn(batch_size):	
-				_, loss = sess.run([train_op, cross_entropy_loss], feed_dict={
-					input_image: batch_x, 
-					correct_label: batch_y, 
-					keep_prob: keep_prob, 
-					learning_rate: learning_rate
+			for images, labels in get_batches_fn(BATCH_SIZE):
+				index += 1
+				_, loss = sess.run([train_op, cross_entropy_loss], feed_dict = { 
+					input_image: images,
+					correct_label: labels,
+					keep_prob: 0.5,
+					learning_rate: LEARNING_RATE 
 				})
-			index += 1
-			print("Epoch:", '%04d | ' % (i+1), "cost =", "{:.9f}".format(cost_per_epoch))
+				print("Epoch:", '%04d | ' % (index+1), "cost =", "{:.9f}".format(loss))
 
 tests.test_train_nn(train_nn)
 
@@ -160,13 +159,15 @@ def run():
 		# Create function to get batches
 		get_batches_fn = helper.gen_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
 
-		# OPTIONAL: Augment Images for better results
-		#  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
+		# Init variables
+		sess.run(tf.global_variables_initializer())
+		#sess.run(tf.global_variables_initializer())
+		#sess.run(tf.local_variables_initializer())
 
-		# TODO: Build NN using load_vgg, layers, and optimize function
+		# Build NN using load_vgg, layers, and optimize function
 		image_input, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
 
-		# TODO: Train NN using the train_nn function
+		# Train NN using the train_nn function
 		logits, optimizer, cost = optimize(nn_last_layer, correct_label, LEARNING_RATE, num_classes)
 		train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, optimizer, cost, image_input, correct_label, KEEP_PROB, LEARNING_RATE)
 
