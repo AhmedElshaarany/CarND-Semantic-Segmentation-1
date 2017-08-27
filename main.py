@@ -66,23 +66,25 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
 	:return: The Tensor for the last layer of output
 	"""
 
+	kernel_initializer = tf.truncated_normal_initializer(stddev = 0.01)
+
 	# Transform the Fully Connected Layer output of layer 7, 4 and 3 to a 1*1 Convolution layer
 	# l1_* is misleading as it is the transformed 7th layer from VGG16, did not find good naming convention
-	l1_conv_1x1 = tf.layers.conv2d(inputs=vgg_layer3_out, filters=num_classes, kernel_size=(1,1), strides=(1,1))
-	l2_conv_1x1 = tf.layers.conv2d(inputs=vgg_layer4_out, filters=num_classes, kernel_size=(1,1), strides=(1,1))
-	l3_conv_1x1 = tf.layers.conv2d(inputs=vgg_layer7_out, filters=num_classes, kernel_size=(1,1), strides=(1,1))
+	l1_conv_1x1 = tf.layers.conv2d(inputs=vgg_layer3_out, filters=num_classes, kernel_size=(1,1), strides=(1,1), kernel_initializer=kernel_initializer)
+	l2_conv_1x1 = tf.layers.conv2d(inputs=vgg_layer4_out, filters=num_classes, kernel_size=(1,1), strides=(1,1), kernel_initializer=kernel_initializer)
+	l3_conv_1x1 = tf.layers.conv2d(inputs=vgg_layer7_out, filters=num_classes, kernel_size=(1,1), strides=(1,1), kernel_initializer=kernel_initializer)
 
 	# Decoder Layer with upsampling and skipped connections
 	# Upsampling l1_conv_1x1
-	l4_decoder = tf.layers.conv2d_transpose(inputs=l3_conv_1x1, filters=num_classes, kernel_size=(4,4), strides=(2,2), padding='same')
+	l4_decoder = tf.layers.conv2d_transpose(inputs=l3_conv_1x1, filters=num_classes, kernel_size=(4,4), strides=(2,2), padding='same', kernel_initializer=kernel_initializer)
 	# Skip connections from VGG16 layer 4
 	l5_decoder = tf.add(l4_decoder, l2_conv_1x1)
 	# Upsampling l5_decoder
-	l6_decoder = tf.layers.conv2d_transpose(inputs=l5_decoder, filters=num_classes, kernel_size=(4,4), strides=(2,2), padding='same')
+	l6_decoder = tf.layers.conv2d_transpose(inputs=l5_decoder, filters=num_classes, kernel_size=(4,4), strides=(2,2), padding='same', kernel_initializer=kernel_initializer)
 	# Skip connections from VGG16 layer 3
 	l7_decoder = tf.add(l6_decoder, l1_conv_1x1)
 	# Upsampling l7_decoder
-	output = tf.layers.conv2d_transpose(inputs=l7_decoder, filters=num_classes, kernel_size=(16,16), strides=(8,8), padding='same')
+	output = tf.layers.conv2d_transpose(inputs=l7_decoder, filters=num_classes, kernel_size=(16,16), strides=(8,8), padding='same', kernel_initializer=kernel_initializer)
 
 	return output
 tests.test_layers(layers)
@@ -128,7 +130,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 	"""
 
 	# Train the model
-	sufficient_cost = 30
+	sufficient_cost = 1
 	with sess.as_default():
 		# Init tensors 
 		sess.run(tf.global_variables_initializer())
@@ -143,8 +145,8 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 					learning_rate: LEARNING_RATE 
 				})
 				print("Iteration among the batch:", '%04d | ' % (index), "cost =", "{:.9f}".format(loss))
-				if(loss < sufficient_cost):
-					break; 
+				#if(loss < sufficient_cost):
+				#	break; 
 			print("Epoch:", '%04d | ' % (epoch+1), "cost =", "{:.9f}".format(loss))
 
 
