@@ -130,14 +130,18 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 	# Train the model
 	with sess.as_default():
 		for epoch in range(EPOCHS):
+			# Init tensors 
+			sess.run(tf.global_variables_initializer())
+			#sess.run(tf.global_variables_initializer())
+			#sess.run(tf.local_variables_initializer())
 			index = 0
 			for images, labels in get_batches_fn(batch_size):
 				index += 1
 				_, loss = sess.run([train_op, cross_entropy_loss], feed_dict = { 
 					input_image: images,
 					correct_label: labels,
-					keep_prob: keep_prob,
-					learning_rate: learning_rate 
+					keep_prob: KEEP_PROBABILITY,
+					learning_rate: LEARNING_RATE 
 				})
 				print("Epoch:", '%04d | ' % (index+1), "cost =", "{:.9f}".format(loss))
 
@@ -164,11 +168,6 @@ def run():
 		# Create function to get batches
 		get_batches_fn = helper.gen_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
 
-		# Init variables
-		sess.run(tf.global_variables_initializer())
-		#sess.run(tf.global_variables_initializer())
-		#sess.run(tf.local_variables_initializer())
-
 		# Build NN using load_vgg, layers, and optimize function
 		image_input, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
 
@@ -176,8 +175,8 @@ def run():
 		nn_last_layer = layers(layer3_out, layer4_out, layer7_out, num_classes)
 
 		# Train NN using the train_nn function
-		logits, optimizer, cost = optimize(nn_last_layer, correct_label, LEARNING_RATE, num_classes)
-		train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, optimizer, cost, image_input, correct_label, KEEP_PROBABILITY, LEARNING_RATE)
+		logits, optimizer, cost = optimize(nn_last_layer, correct_label, learning_rate, num_classes)
+		train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, optimizer, cost, image_input, correct_label, keep_prob, learning_rate)
 
 		# Save inference data using helper.save_inference_samples
 		helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, KEEP_PROBABILITY, input_image)
