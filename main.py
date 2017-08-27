@@ -98,8 +98,9 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
 	:param num_classes: Number of classes to classify
 	:return: Tuple of (logits, train_op, cross_entropy_loss)
 	"""
-	# Get logits 
+	# Reshape 4D tensors to 2D ones (reach row being a pixel and each column a class)
 	logits = tf.reshape(nn_last_layer, (-1, num_classes))
+	correct_label = tf.reshape(nn_last_layer, (-1, num_classes))
 
 	# Define cost function (cross_entropy_loss)
 	cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=correct_label)) 
