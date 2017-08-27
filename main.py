@@ -7,7 +7,7 @@ import project_tests as tests
 
 # Parameters used while training the NN
 EPOCHS = 2
-BATCH_SIZE = 10
+BATCH_SIZE = 2
 KEEP_PROBABILITY = 0.75
 LEARNING_RATE = 0.0001
 
@@ -126,8 +126,9 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 	:param keep_prob: TF Placeholder for dropout keep probability
 	:param learning_rate: TF Placeholder for learning rate
 	"""
-	
+
 	# Train the model
+	sufficient_cost = 30
 	with sess.as_default():
 		# Init tensors 
 		sess.run(tf.global_variables_initializer())
@@ -141,8 +142,25 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 					keep_prob: KEEP_PROBABILITY,
 					learning_rate: LEARNING_RATE 
 				})
-				print("Epoch:", '%04d | ' % (index), "partial cost =", "{:.9f}".format(loss))
-			print("Epoch:", '%04d | ' % (index), "training cost =", "{:.9f}".format(loss))
+				print("Iteration among the batch:", '%04d | ' % (index), "cost =", "{:.9f}".format(loss))
+				if(loss < sufficient_cost):
+					break; 
+			print("Epoch:", '%04d | ' % (epoch+1), "cost =", "{:.9f}".format(loss))
+
+
+	"""
+	# Train model
+	for epoch in range(EPOCHS):
+		for step in range(steps_per_epoch):
+			sess.run(optimizer, feed_dict={X: batch_x, y: batch_y, keep_prob: 0.5})
+
+		cost_per_epoch = sess.run(cost, feed_dict={X: batch_x, y: batch_y, keep_prob: 0.5})
+		accuracy_per_epoch = accuracy_op.eval({X: batch_x, y: batch_y, keep_prob: 1})
+		print("Epoch:", '%04d | ' % (epoch+1), "cost =", "{:.9f}".format(cost_per_epoch), " | accuracy = {:.5f}".format(accuracy_per_epoch))
+		
+		if(cost_per_epoch < sufficient_cost):
+			break; 
+	"""
 
 tests.test_train_nn(train_nn)
 
@@ -178,7 +196,7 @@ def run():
 		train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, optimizer, cost, image_input, correct_label, keep_prob, learning_rate)
 
 		# Save inference data using helper.save_inference_samples
-		helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, KEEP_PROBABILITY, input_image)
+		helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, image_input)
 
 if __name__ == '__main__':
 	run()
