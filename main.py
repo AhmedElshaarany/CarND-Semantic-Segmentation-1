@@ -6,8 +6,8 @@ from distutils.version import LooseVersion
 import project_tests as tests
 
 # Parameters used while training the NN
-EPOCHS = 2
-BATCH_SIZE = 2
+EPOCHS = 20
+BATCH_SIZE = 8
 KEEP_PROBABILITY = 0.75
 LEARNING_RATE = 0.0001
 
