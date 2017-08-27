@@ -74,15 +74,15 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
 
 	# Decoder Layer with upsampling and skipped connections
 	# Upsampling l1_conv_1x1
-	l4_decoder = tf.layers.conv2d_transpose(inputs=l1_conv_1x1, filters=num_classes, kernel_size=(4,4), strides=(2,2), padding='same')
+	l4_decoder = tf.layers.conv2d_transpose(inputs=l3_conv_1x1, filters=num_classes, kernel_size=(4,4), strides=(2,2), padding='same')
 	# Skip connections from VGG16 layer 4
 	l5_decoder = tf.add(l4_decoder, l2_conv_1x1)
-	# Upsampling l2_conv_1x1
-	l6_decoder = tf.layers.conv2d_transpose(inputs=l2_conv_1x1, filters=num_classes, kernel_size=(4,4), strides=(2,2), padding='same')
+	# Upsampling l5_decoder
+	l6_decoder = tf.layers.conv2d_transpose(inputs=l5_decoder, filters=num_classes, kernel_size=(4,4), strides=(2,2), padding='same')
 	# Skip connections from VGG16 layer 3
 	l7_decoder = tf.add(l6_decoder, l1_conv_1x1)
-	# Upsampling l3_conv_1x1
-	output = tf.layers.conv2d_transpose(inputs=l3_conv_1x1, filters=num_classes, kernel_size=(16,16), strides=(8,8), padding='same')
+	# Upsampling l7_decoder
+	output = tf.layers.conv2d_transpose(inputs=l7_decoder, filters=num_classes, kernel_size=(16,16), strides=(8,8), padding='same')
 
 	return output
 tests.test_layers(layers)
