@@ -6,8 +6,8 @@ from distutils.version import LooseVersion
 import project_tests as tests
 
 # Parameters used while training the NN
-EPOCHS = 10
-BATCH_SIZE = 1
+EPOCHS = 2
+BATCH_SIZE = 10
 KEEP_PROBABILITY = 0.75
 LEARNING_RATE = 0.0001
 
@@ -129,11 +129,9 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 	
 	# Train the model
 	with sess.as_default():
-		for epoch in range(EPOCHS):
-			# Init tensors 
-			sess.run(tf.global_variables_initializer())
-			#sess.run(tf.global_variables_initializer())
-			#sess.run(tf.local_variables_initializer())
+		# Init tensors 
+		sess.run(tf.global_variables_initializer())
+		for epoch in range(epochs):
 			index = 0
 			for images, labels in get_batches_fn(batch_size):
 				index += 1
@@ -143,7 +141,8 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 					keep_prob: KEEP_PROBABILITY,
 					learning_rate: LEARNING_RATE 
 				})
-				print("Epoch:", '%04d | ' % (index+1), "cost =", "{:.9f}".format(loss))
+				print("Epoch:", '%04d | ' % (index), "partial cost =", "{:.9f}".format(loss))
+			print("Epoch:", '%04d | ' % (index), "training cost =", "{:.9f}".format(loss))
 
 tests.test_train_nn(train_nn)
 
