@@ -6,7 +6,7 @@ from distutils.version import LooseVersion
 import project_tests as tests
 
 # Parameters used while training the NN
-EPOCHS = 20
+EPOCHS = 5
 BATCH_SIZE = 8
 KEEP_PROBABILITY = 0.75
 LEARNING_RATE = 0.0001
@@ -145,25 +145,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 					learning_rate: LEARNING_RATE 
 				})
 				print("Iteration among the batch:", '%04d | ' % (index), "cost =", "{:.9f}".format(loss))
-				#if(loss < sufficient_cost):
-				#	break; 
 			print("Epoch:", '%04d | ' % (epoch+1), "cost =", "{:.9f}".format(loss))
-
-
-	"""
-	# Train model
-	for epoch in range(EPOCHS):
-		for step in range(steps_per_epoch):
-			sess.run(optimizer, feed_dict={X: batch_x, y: batch_y, keep_prob: 0.5})
-
-		cost_per_epoch = sess.run(cost, feed_dict={X: batch_x, y: batch_y, keep_prob: 0.5})
-		accuracy_per_epoch = accuracy_op.eval({X: batch_x, y: batch_y, keep_prob: 1})
-		print("Epoch:", '%04d | ' % (epoch+1), "cost =", "{:.9f}".format(cost_per_epoch), " | accuracy = {:.5f}".format(accuracy_per_epoch))
-		
-		if(cost_per_epoch < sufficient_cost):
-			break; 
-	"""
-
 tests.test_train_nn(train_nn)
 
 
