@@ -8,7 +8,7 @@ import project_tests as tests
 # Parameters used while training the NN
 EPOCHS = 10
 BATCH_SIZE = 1
-KEEP_PROBABILITY = 0.5
+KEEP_PROBABILITY = 0.75
 LEARNING_RATE = 0.0001
 
 # Tensorflow Placeholders
@@ -53,7 +53,6 @@ def load_vgg(sess, vgg_path):
 	return image_input, keep_prob, layer3_out, layer4_out, layer7_out
 tests.test_load_vgg(load_vgg, tf)
 
-
 def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
 	"""
 	Create the layers for a fully convolutional network.  Build skip-layers using the vgg layers.
@@ -66,24 +65,24 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
 	:param num_classes: Number of classes to classify
 	:return: The Tensor for the last layer of output
 	"""
-	
+
 	# Transform the Fully Connected Layer output of layer 7, 4 and 3 to a 1*1 Convolution layer
 	# l1_* is misleading as it is the transformed 7th layer from VGG16, did not find good naming convention
-	l1_conv_1x1 = tf.layers.conv2d(inputs=vgg_layer3_out, filters=num_classes, kernel_size=1, strides=(1,1))
-	l2_conv_1x1 = tf.layers.conv2d(inputs=vgg_layer4_out, filters=num_classes, kernel_size=1, strides=(1,1))
-	l3_conv_1x1 = tf.layers.conv2d(inputs=vgg_layer7_out, filters=num_classes, kernel_size=1, strides=(1,1))
+	l1_conv_1x1 = tf.layers.conv2d(inputs=vgg_layer3_out, filters=num_classes, kernel_size=(1,1), strides=(1,1))
+	l2_conv_1x1 = tf.layers.conv2d(inputs=vgg_layer4_out, filters=num_classes, kernel_size=(1,1), strides=(1,1))
+	l3_conv_1x1 = tf.layers.conv2d(inputs=vgg_layer7_out, filters=num_classes, kernel_size=(1,1), strides=(1,1))
 
 	# Decoder Layer with upsampling and skipped connections
 	# Upsampling l1_conv_1x1
-	l4_decoder = tf.layers.conv2d_transpose(inputs=l1_conv_1x1, filters=num_classes, kernel_size=(4,4), strides=(2,2))
+	l4_decoder = tf.layers.conv2d_transpose(inputs=l1_conv_1x1, filters=num_classes, kernel_size=(4,4), strides=(2,2), padding='same')
 	# Skip connections from VGG16 layer 4
 	l5_decoder = tf.add(l4_decoder, l2_conv_1x1)
 	# Upsampling l2_conv_1x1
-	l6_decoder = tf.layers.conv2d_transpose(inputs=l2_conv_1x1, filters=num_classes, kernel_size=(4,4), strides=(2,2))
+	l6_decoder = tf.layers.conv2d_transpose(inputs=l2_conv_1x1, filters=num_classes, kernel_size=(4,4), strides=(2,2), padding='same')
 	# Skip connections from VGG16 layer 3
 	l7_decoder = tf.add(l6_decoder, l1_conv_1x1)
 	# Upsampling l3_conv_1x1
-	output = tf.layers.conv2d_transpose(inputs=l3_conv_1x1, filters=num_classes, kernel_size=(16,16), strides=(8,8))
+	output = tf.layers.conv2d_transpose(inputs=l3_conv_1x1, filters=num_classes, kernel_size=(16,16), strides=(8,8), padding='same')
 
 	return output
 tests.test_layers(layers)
@@ -100,9 +99,9 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
 	"""
 	# Reshape 4D tensors to 2D ones (reach row being a pixel and each column a class)
 	logits = tf.reshape(nn_last_layer, (-1, num_classes))
-	correct_label = tf.reshape(nn_last_layer, (-1, num_classes))
+	correct_label = tf.reshape(correct_label, (-1, num_classes))
 
-	# Define cost function (cross_entropy_loss)
+	# Define cost function (which aims at lower the cross_entropy_loss)
 	cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=correct_label)) 
 
 	# Define optimizer
@@ -181,9 +180,6 @@ def run():
 
 		# Save inference data using helper.save_inference_samples
 		helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, KEEP_PROBABILITY, input_image)
-
-		# OPTIONAL: Apply the trained model to a video
-
 
 if __name__ == '__main__':
 	run()
