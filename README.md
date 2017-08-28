@@ -12,21 +12,31 @@ Here are 2 different images on which the trained FCN has been applied. You can f
   * Example 2<br>
 ![output_2](./runs/1503860319.698257/um_000054.png)
 
-
 ### FCN architecture
 * Why FCN and not Convolution Network? <br>
 I will first explain why I did not choose a simple Convolutional Network here. <br>
 A Deep Convolutional Network is really good at guessing what an image is, but we loose the spatial information because of the downsampling made by it. <br> 
 Here, as we want to detect the road on an image, it is important to keep this spatial dimension. Hence we use a FCN, which will upsample the output result of VGG16 to its initial size. <br> 
 
-A FCN is divided into 3 parts: 
+A FCN is divided into 3 parts: <br>
   *1. An Encoder, here a pre-trained VGG16 model
   *2. 1 X 1 Convolution
   *3. Transposed convolution 
 ![fcn_arch](./images/fcn_architecture.jpg)
 
-
 ### Discussion 
+* Choosen parameters (can be tune to yield better results): <br>
+ * `5` Epochs
+ * A batch size of `8`
+ * A dropout of `.75`
+ * `AdamOptimizer` with a learning rate of `.0001` 
+
+* `kernel_initializer` <br>
+I choose [tf.truncated_normal_initializer](https://www.tensorflow.org/api_docs/python/tf/truncated_normal_initializer) as a way to generate a normal distribution. Though some parameters above have been changed between the two following images, using a `kernel_initializer` was a game changer. 
+Without kernel_initializer |  With kernel_initializer
+:-------------------------:|:-------------------------:
+![without_ki](./images/um_000008_nki)  |  ![with_ki](./runs/1503860319.698257/um_000024.png)  
+
 Talk about parameters to tune, AWS training and kernel_initializer
 
 
@@ -40,22 +50,6 @@ Make sure you have the following is installed:
 ##### Dataset
 Download the [Kitti Road dataset](http://www.cvlibs.net/datasets/kitti/eval_road.php) from [here](http://www.cvlibs.net/download.php?file=data_road.zip).  Extract the dataset in the `data` folder.  This will create the folder `data_road` with all the training and test images.
 
-### Start
-##### Implement
-Implement the code in the `main.py` module indicated by the "TODO" comments.
-The comments indicated with "OPTIONAL" tag are not required to complete.
-##### Run
-Run the following command to run the project:
-```
-python main.py
-```
-**Note** If running this in Jupyter Notebook system messages, such as those regarding test status, may appear in the terminal rather than the notebook.
 
-### Submission
-1. Ensure you've passed all the unit tests.
-2. Ensure you pass all points on [the rubric](https://review.udacity.com/#!/rubrics/989/view).
-3. Submit the following in a zip file.
- - `helper.py`
- - `main.py`
- - `project_tests.py`
- - Newest inference images from `runs` folder
+### Credits
+All images (except the ones in `runs` folder) are the property of [Udacity](https://www.udacity.com/)
