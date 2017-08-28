@@ -14,6 +14,16 @@ Here are 2 different images on which the trained FCN has been applied. You can f
 
 
 ### FCN architecture
+* Why FCN and not Convolution Network? <br>
+I will first explain why I did not choose a simple Convolutional Network here. <br>
+A Deep Convolutional Network is really good at guessing what an image is, but we loose the spatial information because of the downsampling made by it. <br> 
+Here, as we want to detect the road on an image, it is important to keep this spatial dimension. Hence we use a FCN, which will upsample the output result of VGG16 to its initial size. <br> 
+
+A FCN is divided into 3 parts: 
+  *1. An Encoder, here a pre-trained VGG16 model
+  *2. 1 X 1 Convolution
+  *3. Transposed convolution 
+![fcn_arch](./images/fcn_architecture.jpg)
 
 
 ### Discussion 
