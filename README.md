@@ -8,12 +8,16 @@ In this project, I implemented a Fully Convolutional Network (FCN) to label the 
 ### Results
 Here are 2 different images on which the trained FCN has been applied. You can found all the result images in the [runs](https://github.com/Mornor/CarND-Semantic-Segmentation/tree/master/runs/1503860319.698257) folder. <br>
   * Example 1
-![output_1](um_000024.png)
+![output_1](./runs/1503860319.698257/um_000024.png)
   * Example 2
-![output_2](um_000054.png)
+![output_2](./runs/1503860319.698257/um_000054.png)
 
 
 ### FCN architecture
+
+
+### Discussion 
+Talk about parameters to tune, AWS training and kernel_initializer
 
 
 ### Setup
