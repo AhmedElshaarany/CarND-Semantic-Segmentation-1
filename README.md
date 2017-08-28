@@ -1,6 +1,20 @@
-# Semantic Segmentation
+# Self-Driving Car Engineer Nanodegree
+# Computer Vision
+## Project: Semantic Segmentation applied on road dataset
+
 ### Introduction
-In this project, you'll label the pixels of a road in images using a Fully Convolutional Network (FCN).
+In this project, I implemented a Fully Convolutional Network (FCN) to label the pixels of a road 
+
+### Results
+Here are 2 different images on which the trained FCN has been applied. You can found all the result images in the [runs](https://github.com/Mornor/CarND-Semantic-Segmentation/tree/master/runs/1503860319.698257) folder. <br>
+  * Example 1
+![output_1](um_000024.png)
+  * Example 2
+![output_2](um_000054.png)
+
+
+### FCN architecture
+
 
 ### Setup
 ##### Frameworks and Packages
