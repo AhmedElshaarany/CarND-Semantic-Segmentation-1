@@ -7,9 +7,9 @@ In this project, I implemented a Fully Convolutional Network (FCN) to label the 
 
 ### Results
 Here are 2 different images on which the trained FCN has been applied. You can found all the result images in the [runs](https://github.com/Mornor/CarND-Semantic-Segmentation/tree/master/runs/1503860319.698257) folder. <br>
-  * Example 1
+  * Example 1<br>
 ![output_1](./runs/1503860319.698257/um_000024.png)
-  * Example 2
+  * Example 2<br>
 ![output_2](./runs/1503860319.698257/um_000054.png)
 
 
