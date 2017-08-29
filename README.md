@@ -26,14 +26,19 @@ A FCN is divided into 3 parts: <br>
 
 ### Discussion 
 * Choosen parameters (can be tune to yield better results): <br>
- * `5` Epochs
- * A batch size of `8`
- * A dropout of `.75`
- * `AdamOptimizer` with a learning rate of `.0001` 
+  * `5` Epochs
+  * A batch size of `8`
+  * A dropout of `.75`
+  * `AdamOptimizer` with a learning rate of `.0001` 
 
 * `kernel_initializer` <br>
-I choose [tf.truncated_normal_initializer](https://www.tensorflow.org/api_docs/python/tf/truncated_normal_initializer) as a way to generate a normal distribution. Though some parameters above have been changed between the two following images, using a `kernel_initializer` was a game changer. 
-![without_ki](./images/um_000008_nki.png "Without kernel_initializer")  |  ![with_ki](./runs/1503860319.698257/um_000024.png "With kernel_initializer")  
+I choose [tf.truncated_normal_initializer](https://www.tensorflow.org/api_docs/python/tf/truncated_normal_initializer) as a way to generate a normal distribution. Though some parameters above have been changed between the two following images, using a 
+`kernel_initializer` was a game changer. 
+
+Without kernel_initializer                |  With kernel_initializer
+:----------------------------------------:|:----------------------------------------:
+![without_ki](./images/um_000008_nki.png) | ![with_ki](./runs/1503860319.698257/um_00008.png)
+
 
 Talk about parameters to tune, AWS training and kernel_initializer
 
