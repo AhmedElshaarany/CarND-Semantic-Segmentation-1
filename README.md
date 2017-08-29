@@ -35,9 +35,9 @@ A FCN is divided into 3 parts: <br>
 I choose [tf.truncated_normal_initializer](https://www.tensorflow.org/api_docs/python/tf/truncated_normal_initializer) as a way to generate a normal distribution. Though some parameters above have been changed between the two following images, using a 
 `kernel_initializer` was a game changer. 
 
-Without kernel_initializer                |  With kernel_initializer
-:----------------------------------------:|:----------------------------------------:
-![without_ki](./images/um_000008_nki.png) | ![with_ki](./runs/1503860319.698257/um_00008.png)
+Without kernel_initializer                                           |  With kernel_initializer
+:-------------------------------------------------------------------:|:-------------------------------------------------------------------:
+<img src="./images/um_000008_nki.png" alt="without_ki" height="200"> | ![with_ki](./runs/1503860319.698257/um_00008.png)
 
 
 Talk about parameters to tune, AWS training and kernel_initializer
