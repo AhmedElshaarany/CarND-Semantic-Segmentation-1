@@ -7,12 +7,8 @@ In this project, I implemented a Fully Convolutional Network (FCN) to label the 
 
 ### Results
 Here are 2 different images on which the trained FCN has been applied. You can found all the result images in the [runs](https://github.com/Mornor/CarND-Semantic-Segmentation/tree/master/runs/1503860319.698257) folder. <br>
-  * Example 1<br>
-![output_1](./runs/1503860319.698257/um_000024.png)
-  * Example 2<br>
-![output_2](./runs/1503860319.698257/um_000054.png)
 
-Example 1                                                            |  Example 2
+Example 1                                                            | Example 2
 :-------------------------------------------------------------------:|:-------------------------------------------------------------------:
 <img src="./runs/1503860319.698257/um_000024.png" alt="ex_1" height="150"> | <img src="./runs/1503860319.698257/um_000054.png" alt="ex_2" height="150">
 
@@ -22,7 +18,7 @@ I will first explain why I did not choose a simple Convolutional Network here. <
 A Deep Convolutional Network is really good at guessing what an image is, but we loose the spatial information because of the downsampling made by it. <br> 
 Here, as we want to detect the road on an image, it is important to keep this spatial dimension. Hence we use a FCN, which will upsample the output result of VGG16 to its initial size. <br> 
 
-A FCN is divided into 3 parts: <br>
+* A FCN is divided into 3 parts: <br>
   *1. An Encoder, here a pre-trained VGG16 model
   *2. 1 X 1 Convolution
   *3. Transposed convolution 
@@ -39,7 +35,7 @@ A FCN is divided into 3 parts: <br>
 I choose [tf.truncated_normal_initializer](https://www.tensorflow.org/api_docs/python/tf/truncated_normal_initializer) as a way to generate a normal distribution. Though some parameters above have been changed between the two following images, using a 
 `kernel_initializer` was a game changer. 
 
-Without kernel_initializer                                           |  With kernel_initializer
+Without kernel_initializer                                           | With kernel_initializer
 :-------------------------------------------------------------------:|:-------------------------------------------------------------------:
 <img src="./images/um_000008_nki.png" alt="without_ki" height="150"> | <img src="./runs/1503860319.698257/um_000008.png" alt="with_ki" height="150">
 
