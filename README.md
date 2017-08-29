@@ -37,7 +37,7 @@ I choose [tf.truncated_normal_initializer](https://www.tensorflow.org/api_docs/p
 
 Without kernel_initializer                                           |  With kernel_initializer
 :-------------------------------------------------------------------:|:-------------------------------------------------------------------:
-<img src="./images/um_000008_nki.png" alt="without_ki" height="80"> | ![with_ki](./runs/1503860319.698257/um_00008.png)
+<img src="./images/um_000008_nki.png" alt="without_ki" height="80"> | ![with_ki](./runs/1503860319.698257/um_000008.png)
 
 
 Talk about parameters to tune, AWS training and kernel_initializer
