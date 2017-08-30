@@ -19,9 +19,9 @@ A Deep Convolutional Network is really good at guessing what an image is, but we
 Here, as we want to detect the road on an image, it is important to keep this spatial dimension. Hence we use a FCN, which will upsample the output result of VGG16 to its initial size. <br> 
 
 * A FCN is divided into 3 parts: <br>
-  *1. An Encoder, here a pre-trained VGG16 model
-  *2. 1 X 1 Convolution
-  *3. Transposed convolution 
+  * 1. An Encoder, here a pre-trained VGG16 model
+  * 2. 1 X 1 Convolution
+  * 3. Transposed convolution 
 ![fcn_arch](./images/fcn_architecture.jpg)
 
 ### Discussion 
