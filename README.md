@@ -10,7 +10,7 @@ Here are 2 different images on which the trained FCN has been applied. You can f
 
 Example 1                                                            | Example 2
 :-------------------------------------------------------------------:|:-------------------------------------------------------------------:
-<img src="./runs/1503860319.698257/um_000024.png" alt="ex_1" height="150"> | <img src="./runs/1503860319.698257/um_000054.png" alt="ex_2" height="150">
+<img src="./runs/1503860319.698257/um_000024.png" alt="ex_1" height="150"/> | <img src="./runs/1503/860319.698257/um_000054.png" alt="ex_2" height="150">
 
 ### FCN architecture
 * Why FCN and not Convolution Network? <br>
@@ -22,7 +22,7 @@ Here, as we want to detect the road on an image, it is important to keep this sp
   * 1. An Encoder, here a pre-trained VGG16 model
   * 2. 1 X 1 Convolution
   * 3. Transposed convolution   
-<center><img src="./images/fcn_architecture.jpg" alt="fcn_arch" height="600"></center>
+<p align="center"><img src="./images/fcn_architecture.jpg" alt="fcn_arch" height="600"/></p>
 
 ### Discussion 
 * Choosen parameters (can be tune to yield better results): <br>
@@ -37,7 +37,7 @@ I choose [tf.truncated_normal_initializer](https://www.tensorflow.org/api_docs/p
 
 Without kernel_initializer                                           | With kernel_initializer
 :-------------------------------------------------------------------:|:-------------------------------------------------------------------:
-<img src="./images/um_000008_nki.png" alt="without_ki" height="150"> | <img src="./runs/1503860319.698257/um_000008.png" alt="with_ki" height="150">
+<img src="./images/um_000008_nki.png" alt="without_ki" height="150"/> | <img src="./runs/1503/860319.698257/um_000008.png" alt="with_ki" height="150">
 
 
 Talk about parameters to tune, AWS training and kernel_initializer
