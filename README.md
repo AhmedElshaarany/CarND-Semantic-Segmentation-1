@@ -21,8 +21,8 @@ Here, as we want to detect the road on an image, it is important to keep this sp
 * A FCN is divided into 3 parts: <br>
   * 1. An Encoder, here a pre-trained VGG16 model
   * 2. 1 X 1 Convolution
-  * 3. Transposed convolution 
-![fcn_arch](./images/fcn_architecture.jpg)
+  * 3. Transposed convolution   
+<img src="./images/fcn_architecture.jpg" alt="fcn_arch" height="150">
 
 ### Discussion 
 * Choosen parameters (can be tune to yield better results): <br>
