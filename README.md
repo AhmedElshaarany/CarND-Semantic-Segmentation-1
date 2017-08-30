@@ -10,7 +10,7 @@ Here are 2 different images on which the trained FCN has been applied. You can f
 
 Example 1                                                            | Example 2
 :-------------------------------------------------------------------:|:-------------------------------------------------------------------:
-<img src="./runs/1503860319.698257/um_000024.png" alt="ex_1" height="150"/> | <img src="./runs/1503/860319.698257/um_000054.png" alt="ex_2" height="150">
+<img src="./runs/1503860319.698257/um_000024.png" alt="ex_1" height="150"> | <img src="./runs/1503860319.698257/um_000054.png" alt="ex_2" height="150">
 
 ### FCN architecture
 * Why FCN and not Convolution Network? <br>
