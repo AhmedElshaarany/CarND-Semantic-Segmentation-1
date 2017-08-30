@@ -22,7 +22,7 @@ Here, as we want to detect the road on an image, it is important to keep this sp
   * 1. An Encoder, here a pre-trained VGG16 model
   * 2. 1 X 1 Convolution
   * 3. Transposed convolution   
-<img src="./images/fcn_architecture.jpg" alt="fcn_arch" height="150">
+<img src="./images/fcn_architecture.jpg" alt="fcn_arch" height="600">
 
 ### Discussion 
 * Choosen parameters (can be tune to yield better results): <br>
