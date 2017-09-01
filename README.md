@@ -42,7 +42,6 @@ Without kernel_initializer                                           | With kern
 * Training <br>
 The model has been trained on Amazon AWS with a [g3.8Xlarge](https://aws.amazon.com/ec2/instance-types/) instance (focused on GPU processing - NVIDIA Tesla M60). 
 
-
 ### Setup
 ##### Frameworks and Packages
 Make sure you have the following is installed:
