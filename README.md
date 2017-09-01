@@ -39,8 +39,8 @@ Without kernel_initializer                                           | With kern
 :-------------------------------------------------------------------:|:-------------------------------------------------------------------:
 <img src="./images/um_000008_nki.png" alt="without_ki" height="150"/> | <img src="./runs/1503860319.698257/um_000008.png" alt="with_ki" height="150">
 
-
-Talk about parameters to tune, AWS training and kernel_initializer
+* Training
+The model has been trained on Amazon AWS with a g3.8Xlarge instance (focused on GPU processing - NVIDIA Tesla M60). 
 
 
 ### Setup
